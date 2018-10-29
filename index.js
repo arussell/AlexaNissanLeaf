@@ -137,6 +137,7 @@ exports.handler = (event, context) => {
 				);
 				return;
 			}
+			console.log("Scheduled update permission failed");
 			sendResponse("Invalid Scheduled Event", "This service is not configured to allow the source of this scheduled event.");
 			return;
 		}
