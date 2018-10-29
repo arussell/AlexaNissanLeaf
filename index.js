@@ -3,6 +3,55 @@
 // Require the leaf.js file with specific vehicle functions.
 let car = require("./leaf");
 
+// Require https so we can send Progressive Responses
+let https = require("https");
+
+// Send a request to the Progressive Response service
+function sendProgressiveResponseRequest(event, requestData, successCallback, failureCallback) {	
+	const options = {
+		hostname: "api.eu.amazonalexa.com",
+		port: 443,
+		path: "/v1/directives",
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + event.context.System.apiAccessToken
+		}
+	};
+
+	const req = https.request(options, resp => {
+		if (resp.statusCode < 200 || resp.statusCode > 300) {
+			console.log(`Failed to send progressive response request (${resp.statusCode}: ${resp.statusMessage})`);
+			if (failureCallback)
+				failureCallback();
+			return;
+		}
+
+		console.log(`Successful progressive response request (${resp.statusCode}: ${resp.statusMessage})`);
+	});
+	
+	req.write(JSON.stringify(requestData));
+	req.end();
+}
+
+// Send a progress message
+function sendProgressMessage(message, event) {
+	// stuff
+	const requestId = event.request.requestId;
+
+	// build the progressive response directive
+	const requestData = {
+		header: {
+	    	 requestId,
+		},
+	    directive: {
+	    	type: 'VoicePlayer.Speak',
+	    	speech: message,
+		},
+	};
+	sendProgressiveResponseRequest(event, requestData, null, null);
+}
+
 // Build a response to send back to Alexa.
 function buildResponse(output, card, shouldEndSession) {
 	return {
@@ -108,6 +157,7 @@ exports.handler = (event, context) => {
 		if (event.request.type === "LaunchRequest") {
 			helpCallback();
 		} else if (event.request.type === "IntentRequest") {
+			sendProgressMessage("Just a moment while I talk to the car. The car might take up to 60 seconds to respond, so please be patient.", event);
 			// Handle different intents by sending commands to the API and providing callbacks.
 			switch (event.request.intent.name) {
 				case "PreheatIntent":
