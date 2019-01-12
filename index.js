@@ -158,7 +158,7 @@ exports.handler = (event, context) => {
 		if (event.request.type === "LaunchRequest") {
 			helpCallback();
 		} else if (event.request.type === "IntentRequest") {
-			sendProgressMessage("Just a moment while I talk to the car. The car might take up to 60 seconds to respond, so please be patient.", event);
+			sendProgressMessage("Just a moment while I talk to the car.", event);
 			// Handle different intents by sending commands to the API and providing callbacks.
 			switch (event.request.intent.name) {
 				case "PreheatIntent":
