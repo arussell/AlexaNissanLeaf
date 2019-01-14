@@ -1,0 +1,166 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "my car",
+            "intents": [
+                {
+                    "name": "PreheatIntent",
+                    "slots": [],
+                    "samples": [
+                        "to warm up",
+                        "to up",
+                        "to pre heat",
+                        "to preheat",
+                        "preheat",
+                        "heat",
+                        "heater",
+                        "turn the heater on",
+                        "warm up",
+                        "warm the car up",
+                        "heat up",
+                        "heat the car up",
+                        "preheat for me",
+                        "start the heaters",
+                        "turn the heater on",
+                        "turn on the heater",
+                        "turn the heat on",
+                        "turn on the heat",
+                        "warm up",
+                        "make it toasty for me",
+                        "it's cold outside",
+                        "heat my seat up"
+                    ]
+                },
+                {
+                    "name": "CoolingIntent",
+                    "slots": [],
+                    "samples": [
+                        "to cool down",
+                        "to down",
+                        "to turn the air conditioning on",
+                        "air conditioning",
+                        "cold",
+                        "turn on air conditioning",
+                        "turn air conditioning on",
+                        "cool down",
+                        "cool down for me"
+                    ]
+                },
+                {
+                    "name": "ClimateControlOffIntent",
+                    "slots": [],
+                    "samples": [
+                        "to turn climate control off",
+                        "to stop climate control",
+                        "to stop air conditioning",
+                        "air conditioning off",
+                        "turn air conditioning off",
+                        "to turn the air conditioning off",
+                        "save energy",
+                        "turn the heater off",
+                        "stop preheat",
+                        "turn off the heater",
+                        "turn the heat off",
+                        "stop the heaters"
+                    ]
+                },
+                {
+                    "name": "UpdateIntent",
+                    "slots": [],
+                    "samples": [
+                        "to update",
+                        "update",
+                        "status",
+                        "update status",
+                        "for an update",
+                        "latest data",
+                        "for the latest data",
+                        "to get an update",
+                        "to send an update",
+                        "to update status",
+                        "to send an update",
+                        "to download an update"
+                    ]
+                },
+                {
+                    "name": "RangeIntent",
+                    "slots": [],
+                    "samples": [
+                        "how many miles",
+                        "miles",
+                        "how many miles are in the tank",
+                        "how far can I drive",
+                        "distance",
+                        "how far",
+                        "range",
+                        "how much range"
+                    ]
+                },
+                {
+                    "name": "ChargeIntent",
+                    "slots": [],
+                    "samples": [
+                        "percent",
+                        "percentage",
+                        "how much charge",
+                        "how much charge it has",
+                        "what percent",
+                        "what percent battery",
+                        "battery",
+                        "battery percentage"
+                    ]
+                },
+                {
+                    "name": "ChargingIntent",
+                    "slots": [],
+                    "samples": [
+                        "charging",
+                        "is it charging",
+                        "if it's charging",
+                        "if it's charging up",
+                        "if it's currently charging",
+                        "currently charging",
+                        "if it's on charge",
+                        "charging up"
+                    ]
+                },
+                {
+                    "name": "ConnectedIntent",
+                    "slots": [],
+                    "samples": [
+                        "connected",
+                        "connected to power",
+                        "connected to mains",
+                        "connected to charger",
+                        "plugged in",
+                        "if it's plugged in",
+                        "is it plugged in",
+                        "currently plugged in"
+                    ]
+                },
+                {
+                    "name": "StartChargingIntent",
+                    "slots": [],
+                    "samples": [
+                        "charge",
+                        "charge now",
+                        "start charging"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                }
+            ],
+            "types": []
+        }
+    }
+}
