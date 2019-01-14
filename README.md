@@ -1,7 +1,7 @@
 # AlexaNissanLeaf
 An Alexa Skill to control the Nissan Leaf (and eNV200).
 
-This version contains several improvements not contained in the version created by scotthelme. You can [view the changes here](https://github.com/arussell/AlexaNissanLeaf/commits/master).
+This version contains several improvements not (yet) contained in the version created by ScottHelme. You can [view the changes here](https://github.com/arussell/AlexaNissanLeaf/commits/master).
 
 # Interacting with Alexa
 By default you interact with the skill using the invocation name "my car" (you can change this in the skill settings if you prefer something else). For example:
@@ -20,6 +20,7 @@ The skill has the following features:
 * Range - Ask how much range you have
 * Battery - Ask how much battery you have
 * Charging - Ask if the car is currently charging
+* Start Charging - Ask the car to start charging if it is plugged in but not currently charging
 * Connected - Ask if the car is connected to a charger
 
 # Examples
@@ -36,3 +37,4 @@ These are examples of some of the interactions with Alexa:
 * Alexa, ask my car to send an update.
 * Alexa, ask my car if it's charging.
 * Alexa, ask my car if it's connected to power.
+* Alexa, ask my car to start charging.
