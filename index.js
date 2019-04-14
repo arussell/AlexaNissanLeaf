@@ -67,11 +67,30 @@ function buildResponse(output, card, shouldEndSession) {
 	};
 }
 
-// Helper to build the text response for range/battery status.
+// Helper to build the text response for battery status.
 function buildBatteryStatus(battery) {
 	console.log(battery);
 	const milesPerMeter = 0.000621371;
-	let response = `You have ${Math.floor((battery.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount / battery.BatteryStatusRecords.BatteryStatus.BatteryCapacity) * 100)}% battery which Nissan's Guessometer says will get you ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOn * milesPerMeter)} miles with the air conditioning on, or ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOff * milesPerMeter)} with the air conditioner off. Based on what I know about the Nissan LEAF, you can expect to get as little as ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOn * milesPerMeter * 0.8)} miles in worse-case conditions or ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOff * milesPerMeter * 1.2)} miles in ideal conditions. `;
+	let response = `You have ${Math.floor((battery.BatteryStatusRecords.BatteryStatus.BatteryRemainingAmount / battery.BatteryStatusRecords.BatteryStatus.BatteryCapacity) * 100)}% battery remaining. 	`;
+
+	if (battery.BatteryStatusRecords.PluginState == "CONNECTED") {
+		response += "The car is plugged in";
+	} else {
+		response += "The car is not plugged in";
+	}
+
+	if (battery.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus != "NOT_CHARGING") {
+		response += " and charging";
+	}
+
+	return response + ".";
+}
+
+// Helper to build the text response for range status.
+function buildRangeStatus(battery) {
+	console.log(battery);
+	const milesPerMeter = 0.000621371;
+	let response = `You have ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOn * milesPerMeter)} miles with the air conditioning on, or ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOff * milesPerMeter)} miles with the air conditioner off. Based on what I know about the Nissan LEAF, you can expect to get as little as ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOn * milesPerMeter * 0.8)} miles in worst case conditions or ${Math.floor(battery.BatteryStatusRecords.CruisingRangeAcOff * milesPerMeter * 1.2)} miles in ideal conditions. `;
 
 	if (battery.BatteryStatusRecords.PluginState == "CONNECTED") {
 		response += "The car is plugged in";
@@ -193,7 +212,7 @@ exports.handler = (event, context) => {
 					break;
 				case "RangeIntent":
 					car.getBatteryStatus(
-						response => sendResponse("Car Range Status", buildBatteryStatus(response)),
+						response => sendResponse("Car Range Status", buildRangeStatus(response)),
 						() => sendResponse("Car Range Status", "Unable to get car battery status.")
 					);
 					break;
