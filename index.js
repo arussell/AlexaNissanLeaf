@@ -105,6 +105,47 @@ function buildRangeStatus(battery) {
 	return response + ".";
 }
 
+// Helper to build the text response for charge time status.
+function buildChargeTimeStatus(battery) {
+	console.log(battery);
+	const milesPerMeter = 0.000621371;
+
+	// Set environment variable "chargeSpeed" to value "3" if you want 3kW reports.
+	// It it's set to any other value, or if env variable not set, assume 6kW speeds.
+	if (typeof process.env.chargeSpeed !== 'undefined' && process.env.chargeSpeed == "3") {
+		hours = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.HourRequiredToFull;
+		minutes = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.MinutesRequiredToFull;
+	} else {
+		hours = battery.BatteryStatusRecords.TimeRequiredToFull200.HourRequiredToFull;
+		minutes = battery.BatteryStatusRecords.TimeRequiredToFull200.MinutesRequiredToFull;
+	}
+
+	let response = `The car will take about ${hours} hour`;
+	if (hours > 1) {
+		response += "s"; // pluralise hours when necessary
+	}
+	// skip minutes if none
+	if (minutes > 0) {
+		response += ` and ${minutes} minute`;
+		if (minutes > 1) {
+			response += "s"; // pluralise hours when necessary
+		}
+	}
+	response += " to charge. ";
+
+	if (battery.BatteryStatusRecords.PluginState == "CONNECTED") {
+		response += "The car is plugged in";
+	} else {
+		response += "The car is not plugged in";
+	}
+
+	if (battery.BatteryStatusRecords.BatteryStatus.BatteryChargingStatus != "NOT_CHARGING") {
+		response += " and charging";
+	}
+
+	return response + ".";
+}
+
 // Helper to build the text response for charging status.
 function buildChargingStatus(charging) {
 	let response = "";
@@ -220,6 +261,12 @@ exports.handler = (event, context) => {
 					car.getBatteryStatus(
 						response => sendResponse("Car Battery Status", buildBatteryStatus(response)),
 						() => sendResponse("Car Battery Status", "Unable to get car battery status.")
+					);
+					break;
+				case "ChargeTimeIntent":
+					car.getBatteryStatus(
+						response => sendResponse("Car Charge Time Status", buildChargeTimeStatus(response)),
+						() => sendResponse("Car Charge Time Status", "Unable to get car battery status.")
 					);
 					break;
 				case "ChargingIntent":

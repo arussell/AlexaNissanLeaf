@@ -111,6 +111,20 @@
                     ]
                 },
                 {
+                    "name": "ChargeTimeIntent",
+                    "slots": [],
+                    "samples": [
+                        "how long to charge",
+                        "how long charging will take",
+                        "how long it will take to charge",
+                        "how fast charging will be",
+                        "how quick charging will be",
+                        "when the battery will be full",
+                        "when it will be charged",
+                        "when it will be full"
+                    ]
+                },
+                {
                     "name": "ChargingIntent",
                     "slots": [],
                     "samples": [
