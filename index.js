@@ -110,6 +110,9 @@ function buildChargeTimeStatus(battery) {
 	console.log(battery);
 	const milesPerMeter = 0.000621371;
 
+	let hours = 0;
+	let minutes = 0;
+
 	// Set environment variable "chargeSpeed" to value "3" if you want 3kW reports.
 	// It it's set to any other value, or if env variable not set, assume 6kW speeds.
 	if (typeof process.env.chargeSpeed !== 'undefined' && process.env.chargeSpeed == "3") {
@@ -128,7 +131,7 @@ function buildChargeTimeStatus(battery) {
 	if (minutes > 0) {
 		response += ` and ${minutes} minute`;
 		if (minutes > 1) {
-			response += "s"; // pluralise hours when necessary
+			response += "s"; // pluralise minutes when necessary
 		}
 	}
 	response += " to charge. ";
