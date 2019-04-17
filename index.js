@@ -113,11 +113,11 @@ function buildChargeTimeStatus(battery) {
 	// Set environment variable "chargeSpeed" to value "3" if you want 3kW reports.
 	// It it's set to any other value, or if env variable not set, assume 6kW speeds.
 	if (typeof process.env.chargeSpeed !== 'undefined' && process.env.chargeSpeed == "3") {
-		hours = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.HourRequiredToFull;
-		minutes = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.MinutesRequiredToFull;
-	} else {
 		hours = battery.BatteryStatusRecords.TimeRequiredToFull200.HourRequiredToFull;
 		minutes = battery.BatteryStatusRecords.TimeRequiredToFull200.MinutesRequiredToFull;
+	} else {
+		hours = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.HourRequiredToFull;
+		minutes = battery.BatteryStatusRecords.TimeRequiredToFull200_6kW.MinutesRequiredToFull;
 	}
 
 	let response = `The car will take about ${hours} hour`;
