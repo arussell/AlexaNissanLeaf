@@ -6,6 +6,9 @@ This version contains several improvements not (yet) contained in the version cr
 ## Setup instructions
 You can follow [Toby Riding's great step-by-step guide on the wiki](https://github.com/arussell/AlexaNissanLeaf/wiki).
 
+## Updating your skill
+To update your skill, edit your Lambda and replace the content of index.js and leaf.js with the versions on the [master](https://github.com/arussell/AlexaNissanLeaf) branch.
+
 ## Interacting with Alexa
 By default you interact with the skill using the invocation name "my car" (you can change this in the skill settings if you prefer something else). For example:
 
