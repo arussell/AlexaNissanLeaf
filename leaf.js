@@ -7,13 +7,12 @@ let querystring = require('querystring');
 var Encryption = require('./encryption.js');
 
 // Do not change this value, it is static.
-let initial_app_strings = "geORNtsZe5I4lRGjG9GZiA";
+let initial_app_strings = "9s5rfKVuMrT03RtzajWNcA";
 // Possible value are NE (Europe), NNA (North America) and NCI (Canada).
 let region_code = process.env.regioncode;
 // You should store your username and password as environment variables. 
 // If you don't you can hard code them in the following variables.
 let username = process.env.username; // Your NissanConnect username or email address.
-let password = querystring.escape(encrypt(process.env.password)); // Your NissanConnect account password.
 
 let sessionid, vin, loginFailureCallback;
 
@@ -37,6 +36,10 @@ function sendRequest(action, requestData, successCallback, failureCallback) {
 		}
 	};
 
+	// Uncomment these for details logging to CloudWatch
+	// console.log(`Options: ${JSON.stringify(options)}`);
+	// console.log(`Request data: ${requestData}`);
+
 	const req = https.request(options, resp => {
 		if (resp.statusCode < 200 || resp.statusCode > 300) {
 			console.log(`Failed to send request ${action} (${resp.statusCode}: ${resp.statusMessage})`);
@@ -55,7 +58,7 @@ function sendRequest(action, requestData, successCallback, failureCallback) {
 			let json = respData && respData.length ? JSON.parse(respData) : null;
 			if (json.status == 200) {
 				successCallback(respData && respData.length ? JSON.parse(respData) : null);
-			}else {
+			} else {
 				console.log(json);
 			}
 		});
@@ -71,22 +74,30 @@ function sendRequest(action, requestData, successCallback, failureCallback) {
 * successCallback
 **/
 function login(successCallback) {
-	sendRequest("UserLoginRequest.php", 
-	"UserId=" + username +
-	"&initial_app_strings=" + initial_app_strings +
-	"&RegionCode=" + region_code +
-	"&Password=" + password,
-	loginResponse => {
-		// Get the session id and VIN for future API calls.
-		// Sometimes the results from the API include a VehicleInfoList array, sometimes they omit it!
-		if (loginResponse.VehicleInfoList) {
-			sessionid = encodeURIComponent(loginResponse.VehicleInfoList.vehicleInfo[0].custom_sessionid);
-			vin = encodeURIComponent(loginResponse.VehicleInfoList.vehicleInfo[0].vin);
-		} else  {
-			sessionid = encodeURIComponent(loginResponse.vehicleInfo[0].custom_sessionid);
-			vin = encodeURIComponent(loginResponse.vehicleInfo[0].vin);			
-		}
-		successCallback();
+	sendRequest("InitialApp_v2.php",
+	"RegionCode=" + region_code +
+	"&initial_app_str=" + initial_app_strings +
+	"&lg=en_US",
+	initialResponse => {
+		let encoded_password = querystring.escape(encrypt(process.env.password, initialResponse.baseprm));
+		sendRequest("UserLoginRequest.php",
+		"UserId=" + username +
+		"&RegionCode=" + region_code +
+		"&initial_app_str=" + initial_app_strings +
+		"&Password=" + encoded_password,
+		loginResponse => {
+			// Get the session id and VIN for future API calls.
+			// Sometimes the results from the API include a VehicleInfoList array, sometimes they omit it!
+			if (loginResponse.VehicleInfoList) {
+				sessionid = encodeURIComponent(loginResponse.VehicleInfoList.vehicleInfo[0].custom_sessionid);
+				vin = encodeURIComponent(loginResponse.VehicleInfoList.vehicleInfo[0].vin);
+			} else  {
+				sessionid = encodeURIComponent(loginResponse.vehicleInfo[0].custom_sessionid);
+				vin = encodeURIComponent(loginResponse.vehicleInfo[0].vin);
+			}
+			successCallback();
+		}, 
+		loginFailureCallback);
 	}, 
 	loginFailureCallback);
 }
@@ -171,7 +182,7 @@ exports.sendUpdateCommand = (successCallback, failureCallback) => {
 /**
 * Encrypt the password for use with API calls.
 **/
-function encrypt(password) {
+function encrypt(password, key) {
 	var e = new Encryption();
-	return e.encrypt(password, "uyI5Dj9g8VCOFDnBRUbr3g");
+	return e.encrypt(password, key);
 }
