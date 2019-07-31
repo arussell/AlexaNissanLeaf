@@ -29,7 +29,7 @@ function sendRequest(action, requestData, successCallback, failureCallback) {
 	const options = {
 		hostname: "gdcportalgw.its-mo.com",
 		port: 443,
-		path: "/gworchest_160803EC/gdc/" + action,
+		path: "/api_v190426_NE/gdc/" + action,
 		method: "POST",
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded",
